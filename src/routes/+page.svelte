@@ -1,5 +1,4 @@
 <script>
-	import Table from '../components/Table.svelte';
 	import Card from '../components/Card.svelte';
 </script>
 
