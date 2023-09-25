@@ -10,7 +10,7 @@
 	onMount(async () => {
 	  fetch("https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=Bourbon")
 		.then((response) => response.json())
-		.then((data) => {
+		.then( (data) => {
 		  // Assuming data.drinks is an array
 		  const drinksData = data.drinks;
 		  drinks.set(drinksData); // Set the data in the store
@@ -22,7 +22,11 @@
   
 	// console.log('drinks::::', drinks)
 
-	let table;
+	 let table = [{
+		"idDrink":"Suraj",
+		"strDrink":"publishDate",
+		"strDrinkThumb":"modifiedDate"
+	 }];
 
 	const watch = drinks.subscribe(async value => {
 		console.log('value:::::',value)
@@ -35,12 +39,17 @@
 	<thead>
 	  <tr>
 		<th>Name</th>
-		<th>Categories</th>
 		<th>Publish date</th>
 		<th>Modified date</th>
 	  </tr>
 	</thead>
 	<tbody>
-
+		{#each table as row}
+		<tr>
+		  <td>{row.idDrink}</td>
+		  <td>{row.strDrink}</td>
+		  <td>{row.strDrinkThumb}</td>
+		</tr>
+		{/each}
 	</tbody>
   </table>
