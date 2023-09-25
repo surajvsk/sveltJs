@@ -1,75 +1,55 @@
+<!-- YourComponent.svelte -->
+<script>
+	import { fetchData } from '../Api/api';
+	import { writable } from 'svelte/store';
+	import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
+	import Card, { Content } from '@smui/card';
+	const [responseDataStore, errorStore] = [writable(null), writable(null)];
+	// const responseDataStore = writable([]);
+	// const errorStore = writable(null);
 
-<script lang="ts">
-    import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
-    import Button, { Label, Icon } from '@smui/button';
-</script>
+	async function fetchDataAndUpdateStores() {
+	  try {
+		const data = await fetchData();
+		console.log(data)
+		// Update the reactive stores
+		responseDataStore.set(data.products);
+		errorStore.set(null);
+	  } catch (err) {
+		// Handle errors and update the error store
+		responseDataStore.set([]);
+		errorStore.set(err.message);
+	  }
+	}
+  
+	// Call the fetchDataAndUpdateStores function when the component is initialized
+	fetchDataAndUpdateStores();
+  </script>
+  
+  <DataTable stickyHeader table$aria-label="User list" style="width: 100%;">
+	<Head>
+	  <Row>
+		<Cell>Name</Cell>
+		<Cell>Username</Cell>
+		<Cell>Email</Cell>
+	  </Row>
+	</Head>
+	<Body>
+	  {#if $responseDataStore}
+		{#each $responseDataStore as item (item.id)}
+		  <Row>
+			<Cell>{item.title}</Cell>
+			<Cell>{item.price}</Cell>
+			<Cell>{item.category}</Cell>
+		  </Row>
+		{/each}
+	  {:else if $errorStore}
+		<Row>
+		  <Cell colspan="3">Error: {$errorStore}</Cell>
+		</Row>
+	  {/if}
+	</Body>
+  </DataTable>
 
-<DataTable  style="width: 100%;">
-    <Head>
-        <Row>
-            <Cell >ID</Cell>
-            <Cell>Title</Cell>
-            <Cell>Image</Cell>
-            <Cell>Date Created</Cell>
-            <Cell>Actions</Cell>
-        </Row>
-    </Head>
-<Body>
-    <Row>
-        <Cell>1</Cell>
-        <Cell>Red</Cell>
-        <Cell>Steve</Cell>
-        <Cell>Red</Cell>
-        <Cell>
-            <Button variant="raised">
-                <Label>Edit</Label>
-            </Button>
-            <Button variant="raised">
-                <Label>Delete</Label>
-            </Button>
-        </Cell>
-      </Row>
-      <Row>
-        <Cell>2</Cell>
-        <Cell>Red</Cell>
-        <Cell>Sharon</Cell>
-        <Cell>Purple</Cell>
-        <Cell ><Button variant="raised">
-            <Label>Edit</Label>
-        </Button>
-    
-        <Button variant="raised">
-            <Label>Delete</Label>
-        </Button>
-
-    </Cell>
-      </Row>
-      <Row>
-        <Cell>3</Cell>
-        <Cell>Red</Cell>
-        <Cell>Rodney</Cell>
-        <Cell>Orange</Cell>
-        <Cell ><Button variant="raised">
-            <Label>Edit</Label>
-        </Button>
-        <Button variant="raised">
-            <Label>Delete</Label>
-        </Button>
-    </Cell>
-      </Row>
-      <Row>
-        <Cell>4</Cell>
-        <Cell>Red</Cell>
-        <Cell>Mack</Cell>
-        <Cell>Blue</Cell>
-        <Cell ><Button variant="raised">
-            <Label>Edit</Label>
-        </Button>
-        <Button variant="raised" class="button-shaped-round">
-            <Label>Delete</Label>
-        </Button>
-    </Cell>
-      </Row>
-    </Body>
-
-</DataTable>
+  
+  

@@ -1,5 +1,6 @@
 <script>
 	import Table from '../components/Table.svelte';
+	import Card from '../components/Card.svelte';
 </script>
 
 <svelte:head>
@@ -9,7 +10,7 @@
 
 <section>
 <h1>Crud Application using svelt and nodejs</h1>
-	<Table/>
+	<Card/>
 </section>
 
 

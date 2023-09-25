@@ -39,3 +39,4 @@ You can preview the production build with `npm run preview`.
 
 #REFERENCE
 https://refine.dev/blog/sveltekit-crud-app-with-svelte-mui/#create-sveltekit-application
+npm config set legacy-peer-deps true
